@@ -1,6 +1,6 @@
 # 📊 WarframeMarket-ItemSet-Price-Aggregator
 
-A Python script that pulls average buy-order prices for all tradeable item sets by interfacing with the [Warframe Market](https://warframe.market/) API (v2).
+A Python script that pulls median buy-order prices for all tradeable item sets by interfacing with the [Warframe Market](https://warframe.market/) API (v2).
 
 This is helpful for finding rare items to potentially sell or to find rare relics in your inventory.
 
@@ -9,19 +9,21 @@ The program will spit out a file in the same directory called `out.txt` after it
 
 Sample Output:
 ```text
-Braton Vandal Set: 226.4p
-Lato Vandal Set: 195.2p
-Vauban Prime Set: 120.0p
-Akstiletto Prime Set: 113.0p
-Hespar Set: 94.6p
-Dual Kamas Prime Set: 86.0p
+Braton Vandal Set: 227p
+Lato Vandal Set: 200p
+Vauban Prime Set: 120p
+Akstiletto Prime Set: 113p
+Arum Spinosa Set: 100p
+Nami Skyla Prime Set: 91p
+Dual Kamas Prime Set: 90p
 ...
 ```
 
 ## Key Features
-- **Set Filtering**: Finds Prime and non-Prime sets by checking slugs and item names.
+- **Set Filtering**: Finds all tradable item sets by checking slugs and item names.
 - **Rate Limit Handling**: Uses a semaphore and sleep timers to stay under the API limit.
 - **Async**: Fetches multiple prices concurrently to save time.
+- **Resilient Scraping**: Implemented with asyncio semaphores and exponential backoff to handle rate limits gracefully.
 
 ## Installation
 
@@ -32,9 +34,22 @@ cd WarframeMarket-ItemSet-Price-Aggregator
 ```
 
 ### 2. Set up a Virtual Environment (Recommended)
+**macOS / Linux (Bash/Zsh):**
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+** Windows (Command Prompt):**
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+** Windows (PowerShell):**
+```bash
+python3 -m venv .venv
+.\venv\Scripts\Activate.ps1
 ```
 
 ### 3. Install Dependencies
