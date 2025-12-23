@@ -1,16 +1,23 @@
 import asyncio
 from dataclasses import dataclass
+import statistics
 from typing import List
 import tqdm.asyncio
 from warframe_market.client import WarframeMarketClient
 from warframe_market.api.item import Items, Item
+
+# --- Constants ---
+OUTPUT_FILE = "out.txt"
+MAX_CONCURRENT_REQUESTS = 5
+MAX_FETCH_RETRIES = 5
+RATE_LIMIT_SLEEP = 0.35
 
 
 @dataclass
 class ItemWithPrice:
     name: str
     slug: str
-    platinum: float
+    platinum: int
 
     def __str__(self):
         return f"{self.name}: {round(self.platinum, 2)}p"
@@ -20,9 +27,9 @@ async def fetch_price(
     client: WarframeMarketClient, item_name: str, item_slug: str, sem: asyncio.Semaphore
 ):
     async with sem:
-        for attempt in range(5):
+        for attempt in range(MAX_FETCH_RETRIES):
             try:
-                await asyncio.sleep(0.35)
+                await asyncio.sleep(RATE_LIMIT_SLEEP)
 
                 top_orders = await client.get_top_orders_for_item(item_slug)
                 buy_data = top_orders.data.buy
@@ -30,8 +37,10 @@ async def fetch_price(
                 if not buy_data:
                     return ItemWithPrice(item_name, item_slug, 0)
 
-                avg_price = sum(data.platinum for data in buy_data) / len(buy_data)
-                return ItemWithPrice(item_name, item_slug, avg_price)
+                prices = [data.platinum for data in buy_data]
+                median_price = int(statistics.median(prices))
+
+                return ItemWithPrice(item_name, item_slug, median_price)
 
             except Exception as e:
                 if "429" in str(e):
@@ -56,7 +65,7 @@ async def get_all_item_set_buy_prices(
     ]
 
     # Limit concurrent requests
-    sem = asyncio.Semaphore(5)
+    sem = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
 
     tasks = [fetch_price(client, name, slug, sem) for name, slug in targets]
     results = await tqdm.asyncio.tqdm.gather(*tasks)
@@ -72,11 +81,11 @@ async def main():
     async with WarframeMarketClient() as client:
         itemSets = await get_all_item_set_buy_prices(client)
 
-        with open("out.txt", "w", encoding="utf-8") as f:
+        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
             for item in itemSets:
                 f.write(f"{item}\n")
 
-        print(f"Saved {len(itemSets)} items to out.txt")
+        print(f"Saved {len(itemSets)} items to {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":
