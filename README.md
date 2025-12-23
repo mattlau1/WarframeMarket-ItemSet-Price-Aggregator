@@ -34,7 +34,7 @@ cd WarframeMarket-ItemSet-Price-Aggregator
 ```
 
 ### 2. Set up a Virtual Environment (Recommended)
-**macOS / Linux (Bash/Zsh):**
+**macOS / Linux (Bash):**
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
