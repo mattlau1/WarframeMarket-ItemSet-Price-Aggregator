@@ -8,6 +8,7 @@ idna==3.11
 msgspec==0.19.0
 multidict==6.7.0
 propcache==0.4.1
+tqdm==4.67.1
 typing_extensions==4.15.0
 warframe-market.py @ git+https://github.com/aldi-f/warframe-market.py.git@f4c2363cc91b980e4b9bc6a98e702976d88d2478
 yarl==1.22.0

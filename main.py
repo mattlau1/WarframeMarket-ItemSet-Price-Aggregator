@@ -1,6 +1,7 @@
 import asyncio
 from dataclasses import dataclass
 from typing import List
+import tqdm.asyncio
 from warframe_market.client import WarframeMarketClient
 from warframe_market.api.item import Items, Item
 
@@ -35,16 +36,12 @@ async def fetch_price(
             except Exception as e:
                 if "429" in str(e):
                     wait_time = (attempt + 1) * 2
-                    print(
-                        f"Debug: Rate limited on {item_slug}. Waiting {wait_time}s..."
-                    )
                     await asyncio.sleep(wait_time)
                     continue
                 else:
-                    # All results are invalid
-                    raise e
+                    print("WARNING: Results may be incomplete.")
 
-        raise Exception("Item(s) could not be fetched after multiple retries.")
+        print("WARNING: Results may be incomplete.")
 
 
 async def get_all_item_set_buy_prices(
@@ -62,9 +59,9 @@ async def get_all_item_set_buy_prices(
     sem = asyncio.Semaphore(5)
 
     tasks = [fetch_price(client, name, slug, sem) for name, slug in targets]
-    results = await asyncio.gather(*tasks)
+    results = await tqdm.asyncio.tqdm.gather(*tasks)
 
-    items_with_prices = [r for r in results if r is not None and r.platinum > 0]
+    items_with_prices = [r for r in results if r is not None]
 
     items_with_prices.sort(key=lambda x: x.platinum, reverse=True)
 
