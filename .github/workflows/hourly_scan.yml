@@ -2,9 +2,8 @@ name: Hourly Price Aggregator
 
 on:
   schedule:
-    # Runs at the start of every hour
     - cron: '0 * * * *'
-  workflow_dispatch: # Allows you to trigger it manually for testing
+  workflow_dispatch:
 
 jobs:
   build:
@@ -42,11 +41,21 @@ jobs:
             exit(0)
 
         with open('out.txt', 'r') as f:
-            all_lines = f.readlines()
+            all_lines = [l.strip() for l in f.readlines() if l.strip()]
 
-        trimmed_prices = ''.join(all_lines[:50]).strip()
-        if len(all_lines) > 50:
-            trimmed_prices += '\n... (see out.txt for full list)'
+        table_header = '| Item Set | Median Price |\n| :--- | :--- |'
+        table_rows = []
+        max_lines = 50
+
+        for line in all_lines[:max_lines]:
+            if ':' in line:
+                name, price = line.split(':', 1)
+                table_rows.append(f'| {name.strip()} | {price.strip()} |')
+
+        table_content = '\n'.join(table_rows)
+
+        if len(all_lines) > max_lines:
+            table_content += f'\n\n*... (see out.txt for full list of {len(all_lines)} items)*'
 
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M UTC')
 
@@ -57,7 +66,7 @@ jobs:
             print('Error: Markers not found in README.md')
             exit(1)
 
-        new_block = f'{start_m}\n**Last Updated:** {now}\n\n\`\`\`text\n{trimmed_prices}\n\`\`\`\n{end_m}'
+        new_block = f'{start_m}\n**Last Updated:** {now}\n\n{table_header}\n{table_content}\n\n{end_m}'
 
         pattern = re.escape(start_m) + r'.*?' + re.escape(end_m)
         new_content = re.sub(pattern, new_block, content, flags=re.DOTALL)
