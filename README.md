@@ -1,23 +1,16 @@
 # 📊 WarframeMarket-ItemSet-Price-Aggregator
+`![Hourly Price Update](https://github.com/mattlau1/WarframeMarket-ItemSet-Price-Aggregator/actions/workflows/hourly_scan.yml/badge.svg)`
 
 A Python script that pulls median buy-order prices for all tradeable item sets by interfacing with the [Warframe Market](https://warframe.market/) API (v2).
 
 This is helpful for finding rare items to potentially sell or to find rare relics in your inventory.
 
-## Output
-The program will spit out a file in the same directory called `out.txt` after it finishes running.
+## Automation & Output
+This script is set up to run automatically every hour via GitHub Actions.
 
-Sample Output:
-```text
-Braton Vandal Set: 227p
-Lato Vandal Set: 200p
-Vauban Prime Set: 120p
-Akstiletto Prime Set: 113p
-Arum Spinosa Set: 100p
-Nami Skyla Prime Set: 91p
-Dual Kamas Prime Set: 90p
-...
-```
+It fetches the latest median prices and generates an `out.txt` file with the full dataset.
+
+The top 50 results from that scan are injected directly into the [Live Market Prices](#-live-market-prices) section at the bottom of this page.
 
 ## Key Features
 - **Set Filtering**: Finds all tradable item sets by checking slugs and item names.
