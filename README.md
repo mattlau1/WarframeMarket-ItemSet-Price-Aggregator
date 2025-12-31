@@ -69,4 +69,59 @@ As of late 2025, the script analyses approximately 240+ tradeable item sets.
 
 ## 📈 Live Market Prices
 [//]: # (PRICE_START)
+**Last Updated:** 2025-12-31 11:22 UTC
+
+```text
+Braton Vandal Set: 256p
+Lato Vandal Set: 250p
+Akstiletto Prime Set: 120p
+Vauban Prime Set: 119p
+Hespar Set: 101p
+Dual Kamas Prime Set: 100p
+Nami Skyla Prime Set: 100p
+Spira Prime Set: 89p
+Limbo Prime Set: 81p
+Valkyr Prime Set: 80p
+Arum Spinosa Set: 80p
+Sporothrix Set: 80p
+Akjagara Prime Set: 80p
+Hydroid Prime Set: 76p
+Dethcube Prime Set: 75p
+Kronen Prime Set: 75p
+Nyx Prime Set: 72p
+Nekros Prime Set: 71p
+Saryn Prime Set: 70p
+Vectis Prime Set: 70p
+Ballistica Prime Set: 70p
+Carrier Prime Set: 70p
+Akbolto Prime Set: 70p
+Mirage Prime Set: 70p
+Frost Prime Set: 69p
+Aksomati Prime Set: 68p
+Garuda Prime Set: 66p
+Wukong Prime Set: 65p
+Titania Prime Set: 65p
+Loki Prime Set: 65p
+Nova Prime Set: 65p
+Chroma Prime Set: 63p
+Bo Prime Set: 61p
+Nikana Prime Set: 61p
+Atlas Prime Set: 61p
+Afuris Prime Set: 61p
+Kogake Prime Set: 60p
+Wyrm Prime Set: 60p
+Xiphos Set: 60p
+Tekko Prime Set: 60p
+Corinth Prime Set: 60p
+Khora Prime Set: 60p
+Latron Prime Set: 58p
+Rhino Prime Set: 58p
+Trinity Prime Set: 58p
+Morgha Set: 58p
+Nidus Prime Set: 58p
+Gyre Prime Set: 57p
+Boar Prime Set: 56p
+Carmine Penta Set: 56p
+... (see out.txt for full list)
+```
 [//]: # (PRICE_END)
